@@ -49,4 +49,37 @@
         android:background="@color/button_material_dark"
         android:textColor="#ffffffff" />
 
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="@string/Input"
+        android:id="@+id/textView"
+        android:layout_below="@+id/Title"
+        android:layout_alignLeft="@+id/Title"
+        android:layout_alignStart="@+id/Title"
+        android:layout_marginTop="67dp"
+        android:height="100dp"
+        android:textColor="#ffffffff"
+        android:textAlignment="center"
+        android:textSize="40dp"
+        android:clickable="true"
+        android:layout_alignRight="@+id/Title"
+        android:layout_alignEnd="@+id/Title" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="@string/Output"
+        android:id="@+id/textView2"
+        android:layout_below="@+id/textView"
+        android:layout_alignLeft="@+id/textView"
+        android:layout_alignStart="@+id/textView"
+        android:layout_alignRight="@+id/Title"
+        android:layout_alignEnd="@+id/Title"
+        android:height="100dp"
+        android:textColor="#ffffffff"
+        android:textSize="40dp" />
+
 </RelativeLayout>

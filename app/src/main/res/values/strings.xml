@@ -6,4 +6,6 @@
     <string name="MergeSort">Merge Sort - Emmanuel Rosales</string>
     <string name="Ordenar">Ordenar Lista</string>
     <string name="Generar_Lista">Generar Lista</string>
+    <string name="Input">Lista Desordenada</string>
+    <string name="Output">Lista Ordenada</string>
 </resources>
