@@ -1,2 +1,0 @@
-# MergeSortApp
-MergeSortApp Android

@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">MergeSortApp</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+    <string name="title">Merge Sort - Emmanuel Rosales</string>
+    <string name="generar">Generar Lista</string>
+    <string name="ordenar">Ordenar Lista</string>
+    <string name="nombre">Ingrese su Nombre</string>
+</resources>
