@@ -4,12 +4,21 @@ import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.ActionBar;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.os.Build;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.TextView;
+
+import java.util.Arrays;
+import java.util.Random;
+
+import emmanuelrosales.mergesortapp.MergeSort;
 
 
 public class MainActivity extends ActionBarActivity {
@@ -51,16 +60,59 @@ public class MainActivity extends ActionBarActivity {
     /**
      * A placeholder fragment containing a simple view.
      */
-    public static class PlaceholderFragment extends Fragment {
+    public static class PlaceholderFragment extends Fragment implements View.OnClickListener {
+        View rootView;
+        String resultado;
+        Integer[] a;
 
         public PlaceholderFragment() {
         }
 
+        public static Integer[] listaNum(int desde, int hasta, int tam){
+            Integer[] numeros = new Integer [tam];
+            Random rnd = new Random();
+            for (int i = 0; i < numeros.length; i++) {
+                numeros[i] = rnd.nextInt(hasta - desde + 1) + desde;
+            }
+            return numeros;
+        }
+
+        public void generarArreglo(){
+         a = listaNum(0,100,20);
+
+        }
+        public void merge(){
+            MergeSort merge = new MergeSort();
+
+            resultado = merge.main(a);
+        }
+
+
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
                                  Bundle savedInstanceState) {
-            View rootView = inflater.inflate(R.layout.fragment_main, container, false);
+            rootView = inflater.inflate(R.layout.fragment_main, container, false);
+            Button btn = (Button)rootView.findViewById(R.id.btnGenerar);
+            Button btn2 = (Button)rootView.findViewById(R.id.btnOrdenar);
+            btn2.setOnClickListener(this);
+            btn.setOnClickListener(this);
             return rootView;
+        }
+        @Override
+        public void onClick(View v){
+            switch (v.getId()){
+                case R.id.btnOrdenar:
+                    merge();
+                   ((TextView)rootView.findViewById(R.id.textView2)).setText(resultado.toString());
+                break;
+                case R.id.btnGenerar:
+                    generarArreglo();
+                    ((TextView)rootView.findViewById(R.id.textView)).setText(Arrays.toString(a));
+
+
+
+            }
+
         }
     }
 }
