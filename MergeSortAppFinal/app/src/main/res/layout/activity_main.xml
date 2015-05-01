@@ -24,7 +24,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="@string/Inicio"
+        android:text="@string/Final"
         android:id="@+id/msg2"
         android:textColor="#ffffffff"
         android:width="1000dp"
