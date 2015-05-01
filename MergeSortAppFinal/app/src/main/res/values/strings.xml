@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">MergeSortAppV1</string>
+
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+    <string name="Inicio">Inicio del Ordenamiento</string>
+    <string name="Final">Resultado del Ordenamiento</string>
+    <string name="btnEjecutar">Ejecutar</string>
+    <string name="bateria">Batería Actual</string>
+</resources>
