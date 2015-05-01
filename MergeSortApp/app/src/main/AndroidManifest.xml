@@ -16,6 +16,10 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <!-- Declaring Service in Manifest -->
+        <service
+            android:name=".BackgroundIntent"
+            android:exported="false" />
     </application>
 
 </manifest>

@@ -1,40 +1,103 @@
 package emmanuelrosales.mergesortapp;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
+import android.os.BatteryManager;
 import android.support.v7.app.ActionBarActivity;
-import android.support.v7.app.ActionBar;
-import android.support.v4.app.Fragment;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.LayoutInflater;
+import android.os.AsyncTask;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
-import android.os.Build;
-import android.widget.Button;
-import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Button;
+import android.widget.Toast;
 
-import java.util.Arrays;
+import java.util.Date;
 import java.util.Random;
+import android.os.Handler;
 
-import emmanuelrosales.mergesortapp.MergeSort;
+
+public class MainActivity extends ActionBarActivity implements BackgroundResultReceiver.Receiver {
 
 
-public class MainActivity extends ActionBarActivity {
+    private TextView batteryTxt;
+    private BackgroundResultReceiver mReceiver;
+    TextView msg1;
+    TextView msg2;
+
+    private void getBatteryPercentage() {
+        BroadcastReceiver batteryLevelReceiver = new BroadcastReceiver() {
+            public void onReceive(Context context, Intent intent) {
+                context.unregisterReceiver(this);
+                int nivelActual = intent.getIntExtra(BatteryManager.EXTRA_LEVEL, -1);
+                int escala = intent.getIntExtra(BatteryManager.EXTRA_SCALE, -1);
+                int nivel = -1;
+                if (nivelActual >= 0 && escala > 0) {
+                    nivel = (nivelActual * 100) / escala;
+                }
+                batteryTxt.setText("Nivel de bateria: " + nivel + "%");
+            }
+        };
+        IntentFilter batteryLevelFilter = new IntentFilter(Intent.ACTION_BATTERY_CHANGED);
+        registerReceiver(batteryLevelReceiver, batteryLevelFilter);
+    }
+
+    @Override
+    public void onReceiveResult(int resultCode, Bundle resultData) {
+        switch (resultCode) {
+            case BackgroundIntent.STATUS_RUNNING:
+
+                setProgressBarIndeterminateVisibility(true);
+                msg1.setText("Iniciado @" + new Date().toString());
+                getBatteryPercentage();
+                break;
+            case BackgroundIntent.STATUS_FINISHED:
+                /* Hide progress & extract result from bundle */
+                setProgressBarIndeterminateVisibility(false);
+                String exectime = resultData.getString("exectime","No Info");
+                msg2.setText("Finalizado @" + new Date().toString() + " tomo " + exectime);
+                getBatteryPercentage();
+                break;
+            case BackgroundIntent.STATUS_ERROR:
+                /* Handle the error */
+                String error = resultData.getString(Intent.EXTRA_TEXT);
+                Toast.makeText(this, error, Toast.LENGTH_LONG).show();
+                break;
+        }
+    }
+
+    public void onClick(View v) {
+        mySort();
+    }
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        if (savedInstanceState == null) {
-            getSupportFragmentManager().beginTransaction()
-                    .add(R.id.container, new PlaceholderFragment())
-                    .commit();
-        }
+        msg1 = (TextView) findViewById(R.id.msg1);
+        msg2 = (TextView) findViewById(R.id.msg2);
+        batteryTxt = (TextView) findViewById(R.id.batteryTxt);
+        getBatteryPercentage();
+
     }
 
+    public void mySort()
+    {
+     /* Starting Download Service */
+        mReceiver = new BackgroundResultReceiver(new Handler());
+        mReceiver.setReceiver(this);
+        Intent intent = new Intent(Intent.ACTION_SYNC, null, this, BackgroundIntent.class);
 
+        intent.putExtra("receiver", mReceiver);
+
+        startService(intent);
+
+
+    }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -55,64 +118,10 @@ public class MainActivity extends ActionBarActivity {
         }
 
         return super.onOptionsItemSelected(item);
+
     }
 
-    /**
-     * A placeholder fragment containing a simple view.
-     */
-    public static class PlaceholderFragment extends Fragment implements View.OnClickListener {
-        View rootView;
-        String resultado;
-        Integer[] a;
 
-        public PlaceholderFragment() {
-        }
-
-        public static Integer[] listaNum(int desde, int hasta, int tam){
-            Integer[] numeros = new Integer [tam];
-            Random rnd = new Random();
-            for (int i = 0; i < numeros.length; i++) {
-                numeros[i] = rnd.nextInt(hasta - desde + 1) + desde;
-            }
-            return numeros;
-        }
-
-        public void generarArreglo(){
-         a = listaNum(0,100,20);
-
-        }
-        public void merge(){
-            MergeSort merge = new MergeSort();
-
-            resultado = merge.main(a);
-        }
-
-
-        @Override
-        public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                                 Bundle savedInstanceState) {
-            rootView = inflater.inflate(R.layout.fragment_main, container, false);
-            Button btn = (Button)rootView.findViewById(R.id.btnGenerar);
-            Button btn2 = (Button)rootView.findViewById(R.id.btnOrdenar);
-            btn2.setOnClickListener(this);
-            btn.setOnClickListener(this);
-            return rootView;
-        }
-        @Override
-        public void onClick(View v){
-            switch (v.getId()){
-                case R.id.btnOrdenar:
-                    merge();
-                   ((TextView)rootView.findViewById(R.id.textView2)).setText(resultado.toString());
-                break;
-                case R.id.btnGenerar:
-                    generarArreglo();
-                    ((TextView)rootView.findViewById(R.id.textView)).setText(Arrays.toString(a));
-
-
-
-            }
-
-        }
-    }
 }
+
+
