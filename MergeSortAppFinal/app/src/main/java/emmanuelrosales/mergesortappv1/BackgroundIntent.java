@@ -99,7 +99,7 @@ public class BackgroundIntent extends IntentService {
 
             long start = System.nanoTime();
             generarNuevoArreglo();
-            for(int i = 0; i < 200;i++){
+            for(int i = 0; i < 100;i++){
                 mergeApp();
             }
 
